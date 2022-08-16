@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { Container, AppBar, Typography, Grow, Grid } from "@material-ui/core";
 import Post from "./components/Posts/Posts";
 import { useDispatch } from "react-redux";
@@ -8,21 +8,22 @@ import { getPosts } from "./actions/posts";
 const App = () => {
   const newLocal = "https://i.imgur.com/sKs65ZC.jpeg";
   const dispatch = useDispatch();
+  const [currentId, setCurrentId] = useState(0);
   useEffect(() => {
-    dispatch(getPosts());
-  }, [dispatch]);
+    if (!currentId) dispatch(getPosts());
+  }, [dispatch, currentId]);
   const classes = useStyle();
   return (
     <Container maxidth="lg">
       <AppBar className={classes.appBar} position="static" color="inherit">
-        <Typography variant="h2" align="center" className={classes.heading}>
+        <Typography variant="h4" align="center" className={classes.heading}>
           Memories
         </Typography>
         <img
           src={newLocal}
           alt="memories"
           className={classes.image}
-          height={60}
+          height={40}
         />
       </AppBar>
       <Grow in>
@@ -34,10 +35,10 @@ const App = () => {
             spacing={3}
           >
             <Grid item xs={12} sm={7}>
-              <Post />
+              <Post setCurrentId={setCurrentId} />
             </Grid>
             <Grid item xs={12} sm={4}>
-              <Form />
+              <Form currentId={currentId} setCurrentId={setCurrentId} />
             </Grid>
           </Grid>
         </Container>
